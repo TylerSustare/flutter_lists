@@ -6,25 +6,33 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_lists/app_state.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:flutter_lists/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Navigate to settings from home', (WidgetTester tester) async {
+    // home screen
     await tester.pumpWidget(MyApp());
+    expect(find.text('Settings'), findsNothing);
+    expect(find.byIcon(Icons.settings), findsOneWidget);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.byIcon(Icons.settings));
     await tester.pump();
+    await tester.pump();
+    expect(find.text('Settings'), findsOneWidget);
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  test('AppState test theme', () {
+    var app = AppState();
+    expect(app.theme, Brightness.light);
+    app.toggleDark();
+    expect(app.theme, Brightness.dark);
+  });
+  test('AppState test count', () {
+    var app = AppState();
+    expect(app.counter, 0);
+    app.incrementCouter();
+    expect(app.counter, 1);
   });
 }
