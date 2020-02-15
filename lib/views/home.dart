@@ -12,12 +12,6 @@ class MyHomePage extends StatelessWidget {
           onPressed: () => Navigator.pushNamed(context, '/settings'),
         ),
         title: Text(Provider.of<AppState>(context).title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add_box),
-            onPressed: () => Navigator.pushNamed(context, '/add-item'),
-          )
-        ],
       ),
       body: Center(
         child: Column(
@@ -36,7 +30,8 @@ class MyHomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
             // Provider.of<AppState>(context, listen: false).updateCounter(),
-            Provider.of<AppState>(context, listen: false).toggleDark(),
+            // Provider.of<AppState>(context, listen: false).toggleDark(),
+            Navigator.pushNamed(context, '/add-item'),
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),

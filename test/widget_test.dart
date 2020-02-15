@@ -20,7 +20,21 @@ void main() {
     await tester.tap(find.byIcon(Icons.settings));
     await tester.pump();
     await tester.pump();
+    // settings screen
     expect(find.text('Settings'), findsOneWidget);
+  });
+
+  testWidgets('Navigate to add item from home', (WidgetTester tester) async {
+    // home screen
+    await tester.pumpWidget(MyApp());
+    expect(find.text('Add Item to a List'), findsNothing);
+    expect(find.byIcon(Icons.add), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.add));
+    await tester.pump();
+    await tester.pump();
+    // add item screen
+    expect(find.text('Add Item to a List'), findsOneWidget);
   });
 
   test('AppState test theme', () {
