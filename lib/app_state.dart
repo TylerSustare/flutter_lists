@@ -4,7 +4,7 @@ class AppState extends ChangeNotifier {
   int counter = 0;
   String title = 'Flutter Demo Home Page';
 
-  Brightness theme = Brightness.light;
+  Brightness theme = Brightness.dark;
 
   void incrementCouter() {
     counter += 1;

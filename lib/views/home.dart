@@ -28,10 +28,11 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            // Provider.of<AppState>(context, listen: false).updateCounter(),
-            // Provider.of<AppState>(context, listen: false).toggleDark(),
-            Navigator.pushNamed(context, '/add-item'),
+        onPressed: () async {
+          Provider.of<AppState>(context, listen: false).incrementCouter();
+          // Provider.of<AppState>(context, listen: false).toggleDark();
+          // Navigator.pushNamed(context, '/add-item');
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
