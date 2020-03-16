@@ -13,9 +13,8 @@ class LoginScreenState extends State<LoginScreen> {
     super.initState();
     auth.getUser.then(
       (user) {
-        print('\n\n\n');
+        print('initState user');
         print(user);
-        print('\n\n\n');
         if (user != null) {
           Navigator.pushReplacementNamed(context, '/home');
         }

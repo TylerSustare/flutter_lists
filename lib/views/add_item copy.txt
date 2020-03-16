@@ -18,24 +18,6 @@ class ListOfLists extends StatelessWidget {
   }
 }
 
-class LOL extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final user = Provider.of<FirebaseUser>(context);
-    final uid = user.uid;
-    return StreamBuilder<DocumentSnapshot>(
-      stream: Firestore.instance.collection('lists').document(uid).snapshots(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData) return new Text('Loading...');
-        return Container(
-          child: Text(snapshot.data.data.values.toString() ?? ''),
-        );
-      },
-    );
-  }
-}
-
 Future<String> getItems({uid: String}) async {
   final Firestore firestore = Firestore();
   QuerySnapshot items = await firestore
@@ -57,37 +39,32 @@ Future<String> getItems({uid: String}) async {
 Future<void> saveItem({uid, list, item: String}) async {
   // WidgetsFlutterBinding.ensureInitialized();
   final Firestore firestore = Firestore();
-  var items = await firestore
-      .collection('lists')
-      .document(uid)
-      .collection(list)
-      .getDocuments();
-  print('items');
-  print(items.documents);
-
-  var uidDocument = await firestore.collection('lists').document(uid).get();
-  print('uidDocument');
-  List currentLists = uidDocument.data['lists'] ?? [];
-  print(currentLists);
-  if (!currentLists.contains(list)) {
-    currentLists.add(list);
+  final lists = await firestore.collection(uid).document('lists').get();
+  print('lists.data');
+  print(lists.data);
+  if (lists.data != null && !lists.data.containsValue(list)) {
+    var newList = [...lists.data as List];
+    await firestore
+        .collection(uid)
+        .document('lists')
+        .setData(<String, dynamic>{'lists': newList});
   }
+  var items = await firestore.collection(uid).document(list).get();
+  print('items');
+  print(items.data);
+
   List newItems = [];
-  // if (items.data != null) {
-  // newItems = items.data['item'];
-  // }
+  if (items.data != null) {
+    newItems = items.data['item'];
+  }
   print('newItems');
   print(newItems);
   newItems.add(item);
-  await firestore
-      .collection('lists')
-      .document(uid)
-      .setData(<String, dynamic>{'lists': currentLists});
   return firestore
-      .collection('lists')
-      .document(uid)
-      .collection(list)
-      .add(<String, dynamic>{'item': newItems});
+      .collection(uid)
+      // .add(<String, dynamic>{'list': list, 'item': item});
+      .document(list)
+      .setData(<String, dynamic>{'item': newItems});
 }
 
 class AddItem extends StatelessWidget {
@@ -103,8 +80,7 @@ class AddItem extends StatelessWidget {
             child: AddPlayerForm(),
           ),
           Container(
-            // child: ListOfLists(),
-            child: LOL(),
+            child: ListOfLists(),
           ),
         ],
       ),

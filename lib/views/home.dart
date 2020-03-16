@@ -29,9 +29,9 @@ class MyHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Provider.of<AppState>(context, listen: false).incrementCouter();
+          // Provider.of<AppState>(context, listen: false).incrementCouter();
           // Provider.of<AppState>(context, listen: false).toggleDark();
-          // Navigator.pushNamed(context, '/add-item');
+          Navigator.pushNamed(context, '/add-item');
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
