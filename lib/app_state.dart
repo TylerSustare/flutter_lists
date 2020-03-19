@@ -16,3 +16,6 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+// Provider.of<AppState>(context, listen: false).incrementCouter();
+// Provider.of<AppState>(context, listen: false).toggleDark();
