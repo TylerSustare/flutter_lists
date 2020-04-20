@@ -27,8 +27,7 @@ class Settings extends StatelessWidget {
                 color: Colors.red,
                 onPressed: () async {
                   await auth.signOut();
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/', (route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
                 },
               ),
             ),

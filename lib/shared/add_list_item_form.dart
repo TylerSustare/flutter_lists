@@ -84,9 +84,10 @@ class AddItemToListState extends State<AddItemToList> {
                               ),
                             );
                             await ListService().saveItem(
-                                uid: user.uid,
-                                list: listController.text,
-                                item: itemController.text);
+                              uid: user.uid,
+                              list: listController.text,
+                              item: itemController.text,
+                            );
                           } catch (e) {
                             print(e);
                           }

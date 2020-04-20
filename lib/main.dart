@@ -46,9 +46,7 @@ class App extends StatelessWidget {
         '/add-item': (context) => AddItem(),
         '/settings': (context) => Settings(),
       },
-      navigatorObservers: <NavigatorObserver>[
-        FirebaseAnalyticsObserver(analytics: analytics)
-      ],
+      navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsObserver(analytics: analytics)],
     );
   }
 }
