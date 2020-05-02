@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "860695087479",
+    "firebase_url": "https://lists-fds.firebaseio.com",
+    "project_id": "lists-fds",
+    "storage_bucket": "lists-fds.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860695087479:android:d0b25318d7d4f4734d3972",
+        "android_client_info": {
+          "package_name": "dev.frogdog.lists"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860695087479-fgkg2v8jtsbukdslkon846jn2g40c6k2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhVt65aEo4MP2FX6DST-p3czN6_uLMM2E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860695087479-fgkg2v8jtsbukdslkon846jn2g40c6k2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
