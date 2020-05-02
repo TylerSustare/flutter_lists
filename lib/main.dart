@@ -6,6 +6,7 @@ import 'package:flutter_lists/app_state.dart';
 import 'package:flutter_lists/services/auth.dart';
 import 'package:flutter_lists/views/add_item.dart';
 import 'package:flutter_lists/views/home.dart';
+import 'package:flutter_lists/views/list_detail.dart';
 import 'package:flutter_lists/views/login.dart';
 import 'package:flutter_lists/views/settings.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,8 @@ class App extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => LoginScreen(),
-        '/home': (context) => MyHomePage(),
+        '/home': (context) => HomeView(),
+        '/collection': (context) => CollectionView(),
         '/add-item': (context) => AddItem(),
         '/settings': (context) => Settings(),
       },

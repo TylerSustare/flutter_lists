@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ListService {
-  Future<void> saveItem({uid, list, item: String}) {
+  static Future<void> saveItem({uid, list, title: String}) {
     // https://firebase.google.com/docs/firestore/manage-data/transactions
     DocumentReference uidDocumentRef = Firestore.instance.collection('lists').document(uid);
     return Firestore.instance.runTransaction(
@@ -13,34 +13,39 @@ class ListService {
         if (!currentLists.contains(list)) {
           currentLists.add(list);
         }
-        await t.update(uidDocumentRef, <String, dynamic>{'lists': currentLists});
+        if (uidDocument.data == null) {
+          // set the first piece of data on this document being the `lists` object
+          await uidDocumentRef.setData(<String, dynamic>{'lists': currentLists});
+        } else {
+          // if document exists, update as part of the transaction
+          await t.update(uidDocumentRef, <String, dynamic>{'lists': currentLists});
+        }
         return Firestore.instance
             .collection('lists')
             .document(uid)
             .collection(list)
-            .add(<String, dynamic>{'item': item});
+            .add(<String, dynamic>{'title': title});
       }),
     );
   }
 
-  /// deleting collections kinda sucks https://cloud.google.com/firestore/docs/manage-data/delete-data
-  /// TODO: make a cloud function that responds to this and deletes the collection associated to the entry in the list
-  /// https://medium.com/google-cloud/firebase-developing-serverless-functions-in-go-963cb011265d
-  Future<void> removeAt({List<dynamic> list, index: int, uid: String}) async {
+  static Future<void> removeAt({List<dynamic> list, index: int, uid: String}) async {
+    /// deleting collections kinda sucks https://cloud.google.com/firestore/docs/manage-data/delete-data
+    /// TODO: make a cloud function that responds to this and deletes the collection associated to the entry in the list
+    /// https://medium.com/google-cloud/firebase-developing-serverless-functions-in-go-963cb011265d
     list.removeAt(index);
     await Firestore.instance.collection('lists').document(uid).setData(<String, dynamic>{'lists': list});
   }
 
-  Stream<List> getUserLists({uid: String}) {
-    return Firestore.instance.collection('lists').document(uid).snapshots().map((v) => v.data['lists'] as List);
-
-    // this is how you get data out of a stream, you have to unsubscribe without a Streambuilder
-    // await for (var val in ListService().getUserLists(uid: uid)) {
-    // print(val);
-    // }
+  static Stream<DocumentSnapshot> getUserLists({uid: String}) {
+    return Firestore.instance.collection('lists').document(uid).snapshots();
   }
 
-  Future<String> getItemsFromList({list, uid: String}) async {
+  static Stream<QuerySnapshot> getList({uid: String, list: String}) {
+    return Firestore.instance.collection('lists').document(uid).collection(list).snapshots();
+  }
+
+  static Future<String> proofOfConceptThing({list, uid: String}) async {
     final Firestore firestore = Firestore();
     var itemsInList = await Firestore.instance.collection('lists').document(uid).collection(list).getDocuments();
     print(itemsInList);

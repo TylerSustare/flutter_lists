@@ -1,4 +1,3 @@
-// Create a Form widget.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lists/services/list.dart';
@@ -9,21 +8,17 @@ class AddItemToList extends StatefulWidget {
   AddItemToListState createState() => AddItemToListState();
 }
 
-// Create a corresponding State class.
-// This class holds data related to the form. Disposes of "controller" as well from the `dispose()` method
 class AddItemToListState extends State<AddItemToList> {
   AddItemToListState();
 
-  // Create a global key that uniquely identifies the Form widget and allows validation of the form.
-  // Note: This is a GlobalKey<FormState>, not a GlobalKey<AddPlayerFormState>.
   final _formKey = GlobalKey<FormState>();
   final listController = TextEditingController();
-  final itemController = TextEditingController();
+  final titleController = TextEditingController();
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     listController.dispose();
+    titleController.dispose();
     super.dispose();
   }
 
@@ -31,7 +26,6 @@ class AddItemToListState extends State<AddItemToList> {
   Widget build(BuildContext context) {
     final user = Provider.of<FirebaseUser>(context);
 
-    // Build a Form widget using the _formKey created above.
     return Form(
       key: _formKey,
       child: Card(
@@ -53,13 +47,13 @@ class AddItemToListState extends State<AddItemToList> {
                 },
               ),
               TextFormField(
-                controller: itemController,
+                controller: titleController,
                 decoration: InputDecoration(
-                  labelText: 'Item',
+                  labelText: 'Title',
                 ),
                 validator: (value) {
                   if (value.isEmpty) {
-                    return 'Item name can\'t be empty';
+                    return 'Title name can\'t be empty';
                   }
                   return null;
                 },
@@ -70,31 +64,13 @@ class AddItemToListState extends State<AddItemToList> {
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: RaisedButton(
                       onPressed: () async {
-                        // Validate returns true if the form is valid, false if not
-                        if (_formKey.currentState.validate()) {
-                          try {
-                            // If the form is valid, display a Snackbar.
-                            Scaffold.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  'Added "${listController.text}" to game...',
-                                ),
-                                duration: Duration(seconds: 2),
-                                backgroundColor: Colors.pinkAccent,
-                              ),
-                            );
-                            await ListService().saveItem(
-                              uid: user.uid,
-                              list: listController.text,
-                              item: itemController.text,
-                            );
-                          } catch (e) {
-                            print(e);
-                          }
-                          listController.clear();
-                          itemController.clear();
-                          Navigator.pop(context);
-                        }
+                        await validateAndSave(
+                          context: context,
+                          formKey: _formKey,
+                          titleController: titleController,
+                          listController: listController,
+                          user: user,
+                        );
                       },
                       child: Icon(
                         Icons.person_add,
@@ -113,5 +89,36 @@ class AddItemToListState extends State<AddItemToList> {
         ),
       ),
     );
+  }
+}
+
+Future<void> validateAndSave({
+  BuildContext context,
+  GlobalKey<FormState> formKey,
+  FirebaseUser user,
+  TextEditingController listController,
+  TextEditingController titleController,
+}) async {
+  if (formKey.currentState.validate()) {
+    try {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Added "${titleController.text}" to ${listController.text}',
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      await ListService.saveItem(
+        uid: user.uid,
+        list: listController.text.trim(),
+        title: titleController.text.trim(),
+      );
+    } catch (e) {
+      print(e);
+    }
+    listController.clear();
+    titleController.clear();
+    Navigator.pop(context);
   }
 }

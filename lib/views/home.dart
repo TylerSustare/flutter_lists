@@ -3,7 +3,7 @@ import 'package:flutter_lists/app_state.dart';
 import 'package:flutter_lists/shared/list_of_lists.dart';
 import 'package:provider/provider.dart';
 
-class MyHomePage extends StatelessWidget {
+class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +21,7 @@ class MyHomePage extends StatelessWidget {
         onPressed: () async {
           Navigator.pushNamed(context, '/add-item');
         },
-        tooltip: 'Increment',
+        tooltip: 'Add Item',
         child: Icon(Icons.add),
       ),
     );

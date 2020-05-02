@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppState extends ChangeNotifier {
   int counter = 0;
   String title = 'Flutter Demo Home Page';
+  String activeList;
 
   Brightness theme = Brightness.dark;
 
@@ -13,6 +14,11 @@ class AppState extends ChangeNotifier {
 
   void toggleDark() {
     theme = theme == Brightness.dark ? Brightness.light : Brightness.dark;
+    notifyListeners();
+  }
+
+  void setActiveList({listId: String}) {
+    activeList = listId;
     notifyListeners();
   }
 }

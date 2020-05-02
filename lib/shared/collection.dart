@@ -3,34 +3,29 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lists/services/list.dart';
 import 'package:provider/provider.dart';
+
 import '../app_state.dart';
 
-class ListOfLists extends StatelessWidget {
+class Collection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<FirebaseUser>(context);
     final uid = user.uid;
-    return StreamBuilder<DocumentSnapshot>(
-      stream: ListService.getUserLists(uid: uid),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    final activeList = Provider.of<AppState>(context).activeList;
+    return StreamBuilder<QuerySnapshot>(
+      // stream: ListService.getUserLists(uid: uid),
+      stream: ListService.getList(list: activeList, uid: uid),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
-        if (snapshot.data.data == null || snapshot.data.data['lists'] == null) {
-          return Text('Add a list to get started');
-        }
-        List<dynamic> lists = snapshot.data.data['lists'];
+        if (snapshot.data.documents == null) return Text('Add a list to get started');
+        List<DocumentSnapshot> lists = snapshot.data.documents;
         return Container(
           child: ListView.builder(
             itemCount: lists.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
               return Dismissible(
                 key: Key('${lists[index]}-$index'),
-                child: ListTile(
-                  title: Text(lists[index]),
-                  onTap: () {
-                    Provider.of<AppState>(context, listen: false).setActiveList(listId: lists[index]);
-                    Navigator.pushNamed(context, '/collection');
-                  },
-                ),
+                child: ListTile(title: Text(lists[index].data['title'])),
                 background: Container(color: Colors.red),
                 confirmDismiss: (DismissDirection direction) async {
                   final bool res = await showDeleteThingDialog(context, 'List');
