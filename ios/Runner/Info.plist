@@ -50,7 +50,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To use photos in your lists.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To use photos in your lists.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To use video/audio in your lists.</string>
 </dict>
 </plist>

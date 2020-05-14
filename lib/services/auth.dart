@@ -15,7 +15,8 @@ class AuthService {
   Future<FirebaseUser> googleSignIn() async {
     try {
       GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
-      GoogleSignInAuthentication googleAuth = await googleSignInAccount.authentication;
+      GoogleSignInAuthentication googleAuth =
+          await googleSignInAccount.authentication;
 
       final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken,
@@ -43,7 +44,8 @@ class AuthService {
   }
 
   Future<void> updateUserData(FirebaseUser user) {
-    DocumentReference reportRef = _db.collection('preferences').document(user.uid);
+    DocumentReference reportRef =
+        _db.collection('preferences').document(user.uid);
 
     return reportRef.setData({'lastActivity': DateTime.now()}, merge: true);
   }

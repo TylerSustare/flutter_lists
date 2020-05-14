@@ -17,7 +17,8 @@ class Collection extends StatelessWidget {
       stream: ListService.getList(list: activeList, uid: uid),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
-        if (snapshot.data.documents == null) return Text('Add a list to get started');
+        if (snapshot.data.documents == null)
+          return Text('Add a list to get started');
         List<DocumentSnapshot> lists = snapshot.data.documents;
         return Container(
           child: ListView.builder(
@@ -42,13 +43,15 @@ class Collection extends StatelessWidget {
   }
 }
 
-Future<bool> showDeleteThingDialog(BuildContext context, String deleteThisThing) async {
+Future<bool> showDeleteThingDialog(
+    BuildContext context, String deleteThisThing) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text("Delete this $deleteThisThing"),
-        content: Text("Are you sure you wish to delete this $deleteThisThing? You can't get it back."),
+        content: Text(
+            "Are you sure you wish to delete this $deleteThisThing? You can't get it back."),
         actions: <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pop(true),

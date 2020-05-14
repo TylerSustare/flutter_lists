@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lists/services/list.dart';
@@ -14,6 +16,16 @@ class AddItemToListState extends State<AddItemToList> {
   final _formKey = GlobalKey<FormState>();
   final listController = TextEditingController();
   final titleController = TextEditingController();
+
+  File _image;
+  Future getImage() async {
+    // var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+  }
 
   @override
   void dispose() {
@@ -60,6 +72,16 @@ class AddItemToListState extends State<AddItemToList> {
               ),
               Row(
                 children: <Widget>[
+                  _image == null ? Text('No image selected.') : Image.file(_image),
+                  FlatButton(
+                    onPressed: getImage,
+                    child: Icon(Icons.add_a_photo),
+                  )
+                ],
+                mainAxisAlignment: MainAxisAlignment.end,
+              ),
+              Row(
+                children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: RaisedButton(
@@ -78,7 +100,7 @@ class AddItemToListState extends State<AddItemToList> {
                       ),
                       // color: Provider.of<AppState>(context).color,
                       color: Colors.blue,
-                      key: new Key('add-player-to-game'),
+                      key: new Key('add-item-to-list'),
                     ),
                   ),
                 ],

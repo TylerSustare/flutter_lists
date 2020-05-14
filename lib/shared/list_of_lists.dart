@@ -12,7 +12,8 @@ class ListOfLists extends StatelessWidget {
     final uid = user.uid;
     return StreamBuilder<DocumentSnapshot>(
       stream: ListService.getUserLists(uid: uid),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
         if (snapshot.data.data == null || snapshot.data.data['lists'] == null) {
           return Text('Add a list to get started');
@@ -27,7 +28,8 @@ class ListOfLists extends StatelessWidget {
                 child: ListTile(
                   title: Text(lists[index]),
                   onTap: () {
-                    Provider.of<AppState>(context, listen: false).setActiveList(listId: lists[index]);
+                    Provider.of<AppState>(context, listen: false)
+                        .setActiveList(listId: lists[index]);
                     Navigator.pushNamed(context, '/collection');
                   },
                 ),
@@ -47,13 +49,15 @@ class ListOfLists extends StatelessWidget {
   }
 }
 
-Future<bool> showDeleteThingDialog(BuildContext context, String deleteThisThing) async {
+Future<bool> showDeleteThingDialog(
+    BuildContext context, String deleteThisThing) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text("Delete this $deleteThisThing"),
-        content: Text("Are you sure you wish to delete this $deleteThisThing? You can't get it back."),
+        content: Text(
+            "Are you sure you wish to delete this $deleteThisThing? You can't get it back."),
         actions: <Widget>[
           FlatButton(
             onPressed: () => Navigator.of(context).pop(true),

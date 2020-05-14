@@ -19,6 +19,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  home_indicator: ^1.1.5
+  image_picker: ^0.6.6+1
+
   provider: ^4.0.4
 
   firebase_core: 0.4.3+3

@@ -10,6 +10,7 @@ import 'package:flutter_lists/views/list_detail.dart';
 import 'package:flutter_lists/views/login.dart';
 import 'package:flutter_lists/views/settings.dart';
 import 'package:provider/provider.dart';
+import 'package:home_indicator/home_indicator.dart';
 
 // void main() => runApp(MyApp());
 Future<void> main() async {
@@ -19,6 +20,8 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    HomeIndicator.deferScreenEdges([ScreenEdge.bottom]);
+    // HomeIndicator.hide();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AppState()),
@@ -48,7 +51,9 @@ class App extends StatelessWidget {
         '/add-item': (context) => AddItem(),
         '/settings': (context) => Settings(),
       },
-      navigatorObservers: <NavigatorObserver>[FirebaseAnalyticsObserver(analytics: analytics)],
+      navigatorObservers: <NavigatorObserver>[
+        FirebaseAnalyticsObserver(analytics: analytics)
+      ],
     );
   }
 }
