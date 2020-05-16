@@ -4,6 +4,7 @@ class AppState extends ChangeNotifier {
   int counter = 0;
   String title = 'Flutter Demo Home Page';
   String activeList;
+  String activeItem;
 
   Brightness theme = Brightness.dark;
 
@@ -19,6 +20,11 @@ class AppState extends ChangeNotifier {
 
   void setActiveList({listId: String}) {
     activeList = listId;
+    notifyListeners();
+  }
+
+  void setActiveItem({itemId: String}) {
+    activeItem = itemId;
     notifyListeners();
   }
 }

@@ -8,7 +8,7 @@ class AddItem extends StatelessWidget {
       appBar: AppBar(
         title: Text('Add Item to a List'),
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           Container(child: AddItemToList()),
         ],
