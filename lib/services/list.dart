@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ListService {
-  static Future<void> saveItem({uid, list, title: String}) {
+  static Future<void> saveItem({uid, list, title, imageKey: String}) {
     DocumentReference uidDocumentRef = Firestore.instance.collection('lists').document(uid);
     return Firestore.instance.runTransaction(
       (Transaction t) => t.get(uidDocumentRef).then((DocumentSnapshot uidDocument) async {
@@ -24,7 +24,10 @@ class ListService {
             .document(uid)
             .collection(list)
             .document(title)
-            .setData(<String, dynamic>{'title': title});
+            .setData(<String, dynamic>{
+          'title': title,
+          'imageKey': imageKey,
+        });
       }),
     );
   }

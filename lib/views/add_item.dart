@@ -10,7 +10,9 @@ class AddItem extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          Container(child: AddItemToList()),
+          Container(
+            child: AddItemToList(),
+          ),
         ],
       ),
     );

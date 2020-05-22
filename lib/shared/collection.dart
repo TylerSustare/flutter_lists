@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lists/services/list.dart';
+import 'package:flutter_lists/shared/detail.dart';
 import 'package:provider/provider.dart';
 
 import '../app_state.dart';
@@ -13,7 +14,6 @@ class Collection extends StatelessWidget {
     final uid = user.uid;
     final activeList = Provider.of<AppState>(context).activeList;
     return StreamBuilder<QuerySnapshot>(
-      // stream: ListService.getUserLists(uid: uid),
       stream: ListService.getList(list: activeList, uid: uid),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
@@ -31,6 +31,7 @@ class Collection extends StatelessWidget {
                     Provider.of<AppState>(context, listen: false).setActiveItem(itemId: lists[index].data['title']);
                     Navigator.pushNamed(context, '/detail');
                   },
+                  // trailing: ImageDetail( uid: uid, imageKey: lists[index].data['imageKey'],),
                 ),
                 background: Container(color: Colors.red),
                 confirmDismiss: (DismissDirection direction) async {
