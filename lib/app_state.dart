@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppState extends ChangeNotifier {
   int counter = 0;
-  String title = 'Flutter Demo Home Page';
+  String title = 'Welcome to Lists!';
   String activeList;
   String activeItem;
 

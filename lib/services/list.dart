@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'models/item.dart';
+
 class ListService {
-  static Future<void> saveItem({uid, list, title: String}) {
+  static Future<void> saveItem({uid: String, list: String, title: String, description: String, imageKey: String}) {
     DocumentReference uidDocumentRef = Firestore.instance.collection('lists').document(uid);
     return Firestore.instance.runTransaction(
       (Transaction t) => t.get(uidDocumentRef).then((DocumentSnapshot uidDocument) async {
@@ -24,15 +26,14 @@ class ListService {
             .document(uid)
             .collection(list)
             .document(title)
-            .setData(<String, dynamic>{'title': title});
+            .setData(Item(description: description, imageKey: imageKey, title: title).toMap());
       }),
     );
   }
 
   static Future<void> removeAt({List<dynamic> list, index: int, uid: String}) async {
-    /// deleting collections kinda sucks https://cloud.google.com/firestore/docs/manage-data/delete-data
+    ///! deleting collections kinda sucks https://cloud.google.com/firestore/docs/manage-data/delete-data
     /// TODO: make a cloud function that responds to this and deletes the collection associated to the entry in the list
-    /// https://medium.com/google-cloud/firebase-developing-serverless-functions-in-go-963cb011265d
     list.removeAt(index);
     await Firestore.instance.collection('lists').document(uid).setData(<String, dynamic>{'lists': list});
   }
@@ -45,8 +46,14 @@ class ListService {
     return Firestore.instance.collection('lists').document(uid).collection(list).snapshots();
   }
 
-  static Stream<DocumentSnapshot> getItem({uid: String, list: String, item: String}) {
-    return Firestore.instance.collection('lists').document(uid).collection(list).document(item).snapshots();
+  static Stream<Item> getItem({uid: String, list: String, item: String}) {
+    return Firestore.instance
+        .collection('lists')
+        .document(uid)
+        .collection(list)
+        .document(item)
+        .snapshots()
+        .map((DocumentSnapshot v) => Item.fromMap(v.data));
   }
 
   static Future<String> proofOfConceptThing({list, uid: String}) async {
