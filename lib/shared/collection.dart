@@ -31,7 +31,9 @@ class Collection extends StatelessWidget {
                     Provider.of<AppState>(context, listen: false).setActiveItem(itemId: lists[index].data['title']);
                     Navigator.pushNamed(context, '/detail');
                   },
-                  // trailing: ImageDetail( uid: uid, imageKey: lists[index].data['imageKey'],),
+                  trailing: lists[index].data['imageKey'] != null
+                      ? ImageDetail(uid: uid, imageKey: lists[index].data['imageKey'])
+                      : SizedBox.shrink(),
                 ),
                 background: Container(color: Colors.red),
                 confirmDismiss: (DismissDirection direction) async {

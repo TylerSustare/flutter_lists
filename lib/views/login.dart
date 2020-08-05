@@ -37,7 +37,7 @@ class LoginScreenState extends State<LoginScreen> {
             ),
             Text(
               'Login to Start',
-              style: Theme.of(context).textTheme.headline,
+              style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
             ),
             Text('Your Tagline'),
@@ -62,9 +62,7 @@ class LoginButton extends StatelessWidget {
   final String text;
   final Function loginMethod;
 
-  const LoginButton(
-      {Key key, this.text, this.icon, this.color, this.loginMethod})
-      : super(key: key);
+  const LoginButton({Key key, this.text, this.icon, this.color, this.loginMethod}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

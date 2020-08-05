@@ -18,6 +18,7 @@ class AddItemToListState extends State<AddItemToList> {
   final _formKey = GlobalKey<FormState>();
   final listController = TextEditingController();
   final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   File _image;
   Future getImage() async {
@@ -73,6 +74,16 @@ class AddItemToListState extends State<AddItemToList> {
                   return null;
                 },
               ),
+              TextFormField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Description name can\'t be empty';
+                  }
+                  return null;
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 0),
                 child: Row(
@@ -101,7 +112,7 @@ class AddItemToListState extends State<AddItemToList> {
                         if (_image != null) {
                           try {
                             final StorageReference ref = FirebaseStorage().ref().child('/${user.uid}/$imageKey');
-                            ref.putFile(_image); // ? will this use the background?
+                            ref.putFile(_image); //? uploads in the background b/c firebase storage is slow AF
                             //! the following is how to wait for the file to upload
                             // final StorageUploadTask uploadTask = ref.putFile(_image);
                             // await uploadTask.onComplete;
@@ -114,6 +125,7 @@ class AddItemToListState extends State<AddItemToList> {
                           formKey: _formKey,
                           titleController: titleController,
                           listController: listController,
+                          descriptionController: descriptionController,
                           user: user,
                           imageKey: _image != null ? imageKey : null,
                         );
@@ -141,6 +153,7 @@ Future<void> validateAndSave({
   FirebaseUser user,
   TextEditingController listController,
   TextEditingController titleController,
+  TextEditingController descriptionController,
   String imageKey,
 }) async {
   if (formKey.currentState.validate()) {
@@ -156,6 +169,7 @@ Future<void> validateAndSave({
         uid: user.uid,
         list: listController.text.trim(),
         title: titleController.text.trim(),
+        description: descriptionController.text.trim(),
         imageKey: imageKey,
       );
     } catch (e) {
